@@ -9,20 +9,8 @@ namespace WindowsFormsApplication2
     public class Matrix
     {
         double[,] elements;
-        public int Length
-        {
-            get
-            {
-                return elements.GetLength(0);
-            }
-        }
-        public int Width
-        {
-            get
-            {
-                return elements.GetLength(1);   
-            }
-        }
+        public int Length => elements.GetLength(0);
+        public int Width => elements.GetLength(1);
         public double this[int width,int length]
         {
             get { return elements[width,length]; }
@@ -42,8 +30,7 @@ namespace WindowsFormsApplication2
 
         static void Swap<T>(ref T lhs, ref T rhs)
         {
-            T temp;
-            temp = lhs;
+            T temp = lhs;
             lhs = rhs;
             rhs = temp;
         }
@@ -51,15 +38,17 @@ namespace WindowsFormsApplication2
 
         public static Matrix operator* (Matrix m1, Matrix m2)
         {
-            Matrix temp = new Matrix(Math.Max(m1.Width,m2.Width), );
-            Matrix longer = m2;
-            Matrix wider = m2;
-            if (m1.Length > m2.Length)
-                longer = m1;
-            if (m1.Width > m2.Width)
-                wider = m1;
-            if (longer.Width == 1 || wider.Length == 1)
+            Matrix temp = new Matrix(Math.Max(m1.Width,m2.Width), Math.Max(m1.Length,m2.Length));
+            
+            if ((m1.Width == 1 || m2.Width == 1) && (m1.Length == 1 || m2.Length ==1))
             {
+                Matrix longer = m2;
+                Matrix wider = m2;
+                if (m1.Length > m2.Length)
+                    longer = m1;
+                if (m1.Width > m2.Width)
+                    wider = m1;
+
                 for (int i = 0; i < temp.Width; i++)
                 {
                     for (int j = 0; j < temp.Length; j++)
@@ -71,7 +60,6 @@ namespace WindowsFormsApplication2
             }
             else if (m1.Length == m2.Length && m1.Width == m2.Width)
             {
-                Matrix temp = new Matrix(m1.Length, m1.Width);
                 for (int i = 0; i < temp.Width; i++)
                 {
                     for (int j = 0; j < temp.Length; j++)
