@@ -51,6 +51,7 @@ namespace WindowsFormsApplication2
 
         public static Matrix operator* (Matrix m1, Matrix m2)
         {
+            Matrix temp = new Matrix(Math.Max(m1.Width,m2.Width), );
             Matrix longer = m2;
             Matrix wider = m2;
             if (m1.Length > m2.Length)
@@ -59,7 +60,6 @@ namespace WindowsFormsApplication2
                 wider = m1;
             if (longer.Width == 1 || wider.Length == 1)
             {
-                Matrix temp = new Matrix(wider.Width, longer.Length);
                 for (int i = 0; i < temp.Width; i++)
                 {
                     for (int j = 0; j < temp.Length; j++)
