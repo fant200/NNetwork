@@ -5,16 +5,32 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nets", "Nets\Nets.csproj", "{D367567F-51FC-4628-A877-C12C130C3BD2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTests", "NetTests\NetTests.csproj", "{9819674E-3E3F-407F-960B-DF6BF56A1DB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D367567F-51FC-4628-A877-C12C130C3BD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D367567F-51FC-4628-A877-C12C130C3BD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D367567F-51FC-4628-A877-C12C130C3BD2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D367567F-51FC-4628-A877-C12C130C3BD2}.Debug|x86.Build.0 = Debug|Any CPU
 		{D367567F-51FC-4628-A877-C12C130C3BD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D367567F-51FC-4628-A877-C12C130C3BD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D367567F-51FC-4628-A877-C12C130C3BD2}.Release|x86.ActiveCfg = Release|Any CPU
+		{D367567F-51FC-4628-A877-C12C130C3BD2}.Release|x86.Build.0 = Release|Any CPU
+		{9819674E-3E3F-407F-960B-DF6BF56A1DB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9819674E-3E3F-407F-960B-DF6BF56A1DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9819674E-3E3F-407F-960B-DF6BF56A1DB6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9819674E-3E3F-407F-960B-DF6BF56A1DB6}.Debug|x86.Build.0 = Debug|Any CPU
+		{9819674E-3E3F-407F-960B-DF6BF56A1DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9819674E-3E3F-407F-960B-DF6BF56A1DB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9819674E-3E3F-407F-960B-DF6BF56A1DB6}.Release|x86.ActiveCfg = Release|Any CPU
+		{9819674E-3E3F-407F-960B-DF6BF56A1DB6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WindowsFormsApplication2
+namespace Nets
 {
     class NeuralLayer
     {
@@ -24,8 +24,10 @@ namespace WindowsFormsApplication2
         }
         NeuralLayer(int layerSize, NeuralLayer _prevLayer): this(layerSize, _prevLayer.Size)
         {
-
+            prevLayer = _prevLayer;
         }
+        
+
 
     }
 }
