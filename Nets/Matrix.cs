@@ -105,7 +105,7 @@ namespace Nets
             {
                 for (int j = 0; j < Columns; j++)
                 {
-                    elements[i, j] = populatingMethod(i+1, j+1);
+                    elements[i, j] = populatingMethod(i, j);
                 }
             }
         }
