@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WindowsFormsApplication2
+namespace Nets
 {
-    public class Matrix
+    [Serializable]
+    public class Matrix // : IEquatable<Matrix>
     {
         double[,] elements;
         public int Columns => elements.GetLength(1);
@@ -17,12 +19,11 @@ namespace WindowsFormsApplication2
             set { elements[rowNr,columnNr] = value; }
         }
 
-        public Matrix()
-        { }
         public Matrix(int Rows,int Columns)
         {
             elements = new double[Rows, Columns];
         }
+
         public Matrix(double[,] list)
         {
             elements = list;
@@ -35,92 +36,24 @@ namespace WindowsFormsApplication2
             rhs = temp;
         }
 
-        public void CopyResize(int newRowsNr, int newColumnsNr)
-        {
-            double[,] tmp = elements;
-            int oldRowsNr, oldColumnsNr;
-            oldColumnsNr = Columns;
-            oldRowsNr = Rows;
-
-            elements = new double[newRowsNr, newColumnsNr];
-            for (int i = 0; i < Rows; i++)
-            {
-                for (int j = 0; j < Columns; j++)
-                {
-                    elements[i, j] = tmp[i % oldRowsNr, j % oldColumnsNr];
-                }
-            }
-        }
-
         public static Matrix operator* (Matrix m1, Matrix m2)
         {
-            Matrix temp = new Matrix(Math.Max(m1.Rows,m2.Rows), Math.Max(m1.Columns,m2.Columns));
-            Console.WriteLine(temp.Columns);
-            Console.WriteLine(temp.Rows);
-            Console.WriteLine(m1.Rows.ToString() + " " + m1.Columns.ToString());
-            
-            if ((m1.Rows == 1 ^ m2.Rows == 1) && (m1.Columns == 1 ^ m2.Columns == 1))
-            {
-                Matrix longer = m2;
-                Matrix wider = m2;
-                if (m1.Columns > m2.Columns)
-                    wider = m1;
-                if (m1.Rows > m2.Rows)
-                    longer = m1;
+            if (m1.Rows != m2.Columns)
+                throw new ArgumentException(nameof(m1) + " " + nameof(m2));
 
-                for (int i = 0; i < temp.Rows; i++)
-                {
-                    for (int j = 0; j < temp.Columns; j++)
-                    {
-                        temp[i, j] = wider[0, j] * longer[i, 0];
-                    }
-                }
-                return temp;
-            }
-            else if (m1.IsSameSize(m2))
+            Matrix temp = new Matrix(m1.Rows,m2.Columns);
+            for (int i = 0; i < temp.Rows; i++)
             {
-                for (int i = 0; i < temp.Rows; i++)
+                for (int j = 0; j < temp.Columns; j++)
                 {
-                    for (int j = 0; j < temp.Columns; j++)
+                    for (int k = 0; k < m2.Rows; k++)
                     {
-                        temp[i, j] = m1[i, j] * m2[i, j];
+                        temp[i, j] = temp[i, j] + m1[i, k] * m2[k, j];
                     }
-                }
-                return temp;
-            }
-            else if(temp.IsSameSize(m1) ^ temp.IsSameSize(m2))
-            {
-                Matrix smaller = m2;
-                Matrix bigger = m1;
-                if (m2.IsSameSize(temp))
-                {
-                    smaller = m1;
-                    bigger = m2;
-                }
-                if(smaller.Rows == temp.Rows && smaller.Columns == 1)
-                {
-                    for (int i = 0; i < temp.Rows; i++)
-                    {
-                        for (int j = 0; j < temp.Columns; j++)
-                        {
-                            temp[i, j] = bigger[i, j] * smaller[i, 0]; 
-                        }
-                    }
-                    return temp;
-                }
-                if(smaller.Columns == temp.Columns && smaller.Rows==1)
-                {
-                    for (int i = 0; i < temp.Rows; i++)
-                    {
-                        for (int j = 0; j < temp.Columns; j++)
-                        {
-                            temp[i, j] = bigger[i, j] * smaller[0, j];
-                        }
-                    }
-                    return temp;
                 }
             }
-            throw new NotImplementedException();    
+            return temp;
+            
         }
 
         public static Matrix operator+(Matrix m1, Matrix m2)
@@ -137,10 +70,10 @@ namespace WindowsFormsApplication2
                 }
                 return temp;
             }
-            throw new NotSupportedException();
+            throw new ArgumentException(nameof(m1) + " " + nameof(m2));
         }
 
-        public Matrix SumByLength(Matrix m1)
+        public Matrix SumByLength(Matrix m1) //TODO
         {
             Matrix tmp = new Matrix(m1.Rows, 1);
             for (int i = 0; i < m1.Columns; i++)
@@ -153,7 +86,7 @@ namespace WindowsFormsApplication2
             return tmp;
         }
 
-        public Matrix SumByWidth(Matrix m1)
+        public Matrix SumByWidth(Matrix m1) //TODO
         {
             Matrix tmp = new Matrix(1, m1.Columns);
             for (int i = 0; i < m1.Rows; i++)
@@ -164,20 +97,26 @@ namespace WindowsFormsApplication2
                 }
             }
             return tmp;
-        }
+        } 
 
-        public bool IsSameSize(Matrix m1)
-        {
-            return (Rows == m1.Rows && Columns == m1.Columns);
-        }
-
-        public void Print()
+        public void Populate(Func<int, int ,double> populatingMethod)
         {
             for (int i = 0; i < Rows; i++)
             {
                 for (int j = 0; j < Columns; j++)
                 {
-                    Console.Write(elements[i, j].ToString() + " ");
+                    elements[i, j] = populatingMethod(i+1, j+1);
+                }
+            }
+        }
+
+        public void Print() //Temporary
+        {
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
+                {
+                    Console.Write(elements[i, j].ToString() + "\t");
                 }
                 Console.WriteLine();
             }
