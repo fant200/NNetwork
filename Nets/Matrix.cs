@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nets
 {
@@ -12,13 +7,13 @@ namespace Nets
         double[,] elements;
         public int Columns => elements.GetLength(1);
         public int Rows => elements.GetLength(0);
-        public double this[int rowNr,int columnNr]
+        public double this[int rowNr, int columnNr]
         {
-            get { return elements[rowNr,columnNr]; }
-            set { elements[rowNr,columnNr] = value; }
+            get { return elements[rowNr, columnNr]; }
+            set { elements[rowNr, columnNr] = value; }
         }
 
-        public Matrix(int Rows,int Columns)
+        public Matrix(int Rows, int Columns)
         {
             elements = new double[Rows, Columns];
         }
@@ -35,12 +30,12 @@ namespace Nets
             rhs = temp;
         }
 
-        public static Matrix operator* (Matrix m1, Matrix m2)
+        public static Matrix operator *(Matrix m1, Matrix m2)
         {
             if (m1.Rows != m2.Columns)
                 throw new ArgumentException(nameof(m1) + " " + nameof(m2));
 
-            Matrix temp = new Matrix(m1.Rows,m2.Columns);
+            Matrix temp = new Matrix(m1.Rows, m2.Columns);
             for (int i = 0; i < temp.Rows; i++)
             {
                 for (int j = 0; j < temp.Columns; j++)
@@ -51,13 +46,13 @@ namespace Nets
                     }
                 }
             }
-            return temp; 
+            return temp;
         }
 
-        public static Matrix operator+(Matrix m1, Matrix m2)
+        public static Matrix operator +(Matrix m1, Matrix m2)
         {
             Matrix temp = new Matrix(m1.Rows, m1.Columns);
-            if(m1.Rows == m2.Rows && m1.Columns == m2.Columns)
+            if (m1.Rows == m2.Rows && m1.Columns == m2.Columns)
             {
                 for (int i = 0; i < m1.Rows; i++)
                 {
@@ -96,7 +91,6 @@ namespace Nets
             }
             return tmp;
         } 
-
         public double[] ConvertToArray()
         {
             if (Rows != 1 && Columns != 1)
@@ -110,9 +104,9 @@ namespace Nets
                 }
             }
             return temp;
-        } 
+        }
 
-        public void Populate(Func<int, int ,double> populatingFunction)
+        public void Populate(Func<int, int, double> populatingFunction)
         {
             for (int i = 0; i < Rows; i++)
             {
