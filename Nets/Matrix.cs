@@ -63,7 +63,7 @@ namespace Nets
                 }
                 return temp;
             }
-            throw new ArgumentException(nameof(m1) + " " + nameof(m2));
+            throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " Matrices must have equal dimensions");
         }
 
         public Matrix SumByLength(Matrix m1) //TODO

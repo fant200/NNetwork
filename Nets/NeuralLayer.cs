@@ -8,25 +8,47 @@ namespace Nets
 {
     class NeuralLayer
     {
-        Matrix weights,biases;
+        public Matrix weights,biases;
         NeuralLayer prevLayer;
         Matrix errors,deltas;
-        Matrix layerInput, layerOutput;
+        Matrix layerOutput;
+        public static Random rng = new Random();
         int Size => weights.Rows;
         int Inputs => weights.Columns;
 
-        NeuralLayer(int layerSize, int numOfInputs)
+        public NeuralLayer(int numOfInputs, int layerSize)
         {
             weights = new Matrix(layerSize, numOfInputs);
+            weights.ApplyFunction(x => rng.NextDouble());
+            biases = new Matrix(layerSize, 1);
+            biases.ApplyFunction(x => 1);
             errors = new Matrix(layerSize, 1);
             deltas = new Matrix(layerSize, 1);
-            layerInput = new Matrix(layerSize, 1);
+            layerOutput = new Matrix(layerSize, 1);
         }
-        NeuralLayer(int layerSize, NeuralLayer _prevLayer): this(layerSize, _prevLayer.Size)
+        public NeuralLayer(int layerSize, NeuralLayer _prevLayer): this(layerSize, _prevLayer.Size)
         {
             prevLayer = _prevLayer;
         }
-        
+
+        public Matrix ForwardPropagate(Matrix input)
+        {
+            layerOutput = weights * input;
+            layerOutput += biases;
+            layerOutput.ApplyFunction(Math.Tanh);
+            return layerOutput;
+        }
+
+        public Matrix CalculateSelfError(Matrix targets)
+        {
+            errors = layerOutput * targets;
+            return errors;
+        }
+
+        public Matrix CalculatePrevLayerError()
+        {
+            return errors * weights;
+        }
 
 
     }
