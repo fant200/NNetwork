@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Matrix.cs" />
     <Compile Include="NeuralLayer.cs" />
+    <Compile Include="NNetwork.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
