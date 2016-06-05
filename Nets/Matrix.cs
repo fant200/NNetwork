@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Nets
 {
-    [Serializable]
     public class Matrix // : IEquatable<Matrix>
     {
         double[,] elements;
@@ -52,8 +51,7 @@ namespace Nets
                     }
                 }
             }
-            return temp;
-            
+            return temp; 
         }
 
         public static Matrix operator+(Matrix m1, Matrix m2)
@@ -99,13 +97,39 @@ namespace Nets
             return tmp;
         } 
 
-        public void Populate(Func<int, int ,double> populatingMethod)
+        public double[] ConvertToArray()
+        {
+            if (Rows != 1 && Columns != 1)
+                throw new ArgumentException("Matrix must have at least one dimension of size equal 1");
+            double[] temp = new double[Math.Max(Columns, Rows)];
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
+                {
+                    temp[j + i] = elements[i, j];
+                }
+            }
+            return temp;
+        } 
+
+        public void Populate(Func<int, int ,double> populatingFunction)
         {
             for (int i = 0; i < Rows; i++)
             {
                 for (int j = 0; j < Columns; j++)
                 {
-                    elements[i, j] = populatingMethod(i, j);
+                    elements[i, j] = populatingFunction(i, j);
+                }
+            }
+        }
+
+        public void ApplyFunction(Func<double, double> appliedFunction)
+        {
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
+                {
+                    elements[i, j] = appliedFunction(elements[i, j]);
                 }
             }
         }
