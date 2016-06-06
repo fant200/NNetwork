@@ -18,9 +18,15 @@ namespace Nets
             elements = new double[Rows, Columns];
         }
 
-        public Matrix(double[,] list)
+        public Matrix(double[,] array) : this(array.GetLength(0), array.GetLength(1))
         {
-            elements = list;
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
+                {
+                    elements[i, j] = array[i, j];
+                }
+            }
         }
 
         static void Swap<T>(ref T lhs, ref T rhs)
@@ -65,6 +71,11 @@ namespace Nets
             }
             throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " Matrices must have equal dimensions");
         }
+
+        public static explicit operator double[,](Matrix m1)
+        {
+            return m1.elements;
+        } 
 
         public Matrix SumByLength(Matrix m1) //TODO
         {
