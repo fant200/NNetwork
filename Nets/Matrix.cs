@@ -2,7 +2,7 @@
 
 namespace Nets
 {
-    public class Matrix // : IEquatable<Matrix>
+    public class Matrix  : IEquatable<Matrix>
     {
         double[,] elements;
         public int Columns => elements.GetLength(1);
@@ -55,6 +55,40 @@ namespace Nets
             return temp;
         }
 
+        public static Matrix operator *(double d1, Matrix m1)
+        {
+            return m1 * d1;
+        }
+        public static Matrix operator *(Matrix m1, double d1)
+        {
+            Matrix temp = new Matrix(m1.Rows, m1.Columns);
+            for (int i = 0; i < m1.Rows; i++)
+            {
+                for (int j = 0; j < m1.Columns; j++)
+                {
+                    temp[i, j] = m1[i, j] * d1;
+                }
+            }
+            return temp;
+        }
+
+        public static Matrix operator *(int i1,Matrix m1)
+        {
+            return m1 * i1;
+        }
+        public static Matrix operator *(Matrix m1, int i1)
+        {
+            Matrix temp = new Matrix(m1.Rows, m1.Columns);
+            for (int i = 0; i < m1.Rows; i++)
+            {
+                for (int j = 0; j < m1.Columns; j++)
+                {
+                    temp[i, j] = m1[i, j] * i1;
+                }
+            }
+            return temp;
+        }
+
         public static Matrix operator +(Matrix m1, Matrix m2)
         {
             Matrix temp = new Matrix(m1.Rows, m1.Columns);
@@ -70,6 +104,23 @@ namespace Nets
                 return temp;
             }
             throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " Matrices must have equal dimensions");
+        }
+
+        public bool Equals(Matrix other)
+        {
+            if(Rows == other.Rows && Columns == other.Columns)
+            {
+                for (int i = 0; i < Rows; i++)
+                {
+                    for (int j = 0; j < Columns; j++)
+                    {
+                        if (this[i, j] != other[i, j])
+                            return false;
+                    }
+                }
+                return true;
+            }
+            return false;
         }
 
         public static explicit operator double[,](Matrix m1)
@@ -155,6 +206,7 @@ namespace Nets
         {
             return base.ToString();
         }
+
 
     }
 }
