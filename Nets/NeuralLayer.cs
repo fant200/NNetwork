@@ -45,6 +45,11 @@ namespace Nets
             return errors;
         }
 
+        public void SetPrevLayerError()
+        {
+            prevLayer.errors = CalculatePrevLayerError();
+        }
+
         public Matrix CalculatePrevLayerError()
         {
             return errors * weights;
