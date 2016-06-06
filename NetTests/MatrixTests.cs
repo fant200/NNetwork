@@ -1,4 +1,4 @@
-﻿// #define TESTUJE
+﻿#define TESTUJE
 using System;
 using Nets;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -104,8 +104,8 @@ namespace NetTests
             int height = random.Next(0, 30);
             var matrix = new Matrix(height, width);
             var data = new double[height, width];
-            var matrix2 = new Matrix(data);
             data.Randomize();
+            var matrix2 = new Matrix(data);
             Action<Matrix, double[,], int, int> fill = (matrix1, doubles, arg3, arg4) => matrix1[arg3, arg4] = doubles[arg3, arg4];
             DoActionInLoop(matrix, data, fill);
             AreEqual(matrix, data);
