@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nets", "Nets\Nets.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTests", "NetTests\NetTests.csproj", "{9819674E-3E3F-407F-960B-DF6BF56A1DB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF AppChart", "WpfApplication1\WPF AppChart.csproj", "{5B6F4EF1-027B-4063-9EDB-FAB7E9AAC440}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{9819674E-3E3F-407F-960B-DF6BF56A1DB6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9819674E-3E3F-407F-960B-DF6BF56A1DB6}.Release|x86.ActiveCfg = Release|Any CPU
 		{9819674E-3E3F-407F-960B-DF6BF56A1DB6}.Release|x86.Build.0 = Release|Any CPU
+		{5B6F4EF1-027B-4063-9EDB-FAB7E9AAC440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B6F4EF1-027B-4063-9EDB-FAB7E9AAC440}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B6F4EF1-027B-4063-9EDB-FAB7E9AAC440}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5B6F4EF1-027B-4063-9EDB-FAB7E9AAC440}.Debug|x86.Build.0 = Debug|Any CPU
+		{5B6F4EF1-027B-4063-9EDB-FAB7E9AAC440}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B6F4EF1-027B-4063-9EDB-FAB7E9AAC440}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B6F4EF1-027B-4063-9EDB-FAB7E9AAC440}.Release|x86.ActiveCfg = Release|Any CPU
+		{5B6F4EF1-027B-4063-9EDB-FAB7E9AAC440}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
