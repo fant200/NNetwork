@@ -2,11 +2,11 @@
 
 namespace Nets
 {
-    public class Matrix  : IEquatable<Matrix>
+    public class Matrix : IEquatable<Matrix>
     {
         double[,] elements;
-        public int Columns => elements.GetLength(1);
         public int Rows => elements.GetLength(0);
+        public int Columns => elements.GetLength(1);
         public double this[int rowNr, int columnNr]
         {
             get { return elements[rowNr, columnNr]; }
@@ -29,17 +29,10 @@ namespace Nets
             }
         }
 
-        static void Swap<T>(ref T lhs, ref T rhs)
-        {
-            T temp = lhs;
-            lhs = rhs;
-            rhs = temp;
-        }
-
         public static Matrix operator *(Matrix m1, Matrix m2)
         {
-            if (m1.Rows != m2.Columns)
-                throw new ArgumentException(nameof(m1) + " " + nameof(m2));
+            if (m1.Columns != m2.Rows)
+                throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " have wrong dimensions");
 
             Matrix temp = new Matrix(m1.Rows, m2.Columns);
             for (int i = 0; i < temp.Rows; i++)
@@ -72,7 +65,7 @@ namespace Nets
             return temp;
         }
 
-        public static Matrix operator *(int i1,Matrix m1)
+        public static Matrix operator *(int i1, Matrix m1)
         {
             return m1 * i1;
         }
@@ -103,12 +96,12 @@ namespace Nets
                 }
                 return temp;
             }
-            throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " Matrices must have equal dimensions");
+            throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " matrices must have equal dimensions");
         }
 
         public bool Equals(Matrix other)
         {
-            if(Rows == other.Rows && Columns == other.Columns)
+            if (Rows == other.Rows && Columns == other.Columns)
             {
                 for (int i = 0; i < Rows; i++)
                 {
@@ -123,10 +116,10 @@ namespace Nets
             return false;
         }
 
-        public static explicit operator double[,](Matrix m1)
+        public static explicit operator double[,] (Matrix m1)
         {
             return m1.elements;
-        } 
+        }
 
         public Matrix SumByLength(Matrix m1) //TODO
         {
@@ -152,7 +145,7 @@ namespace Nets
                 }
             }
             return tmp;
-        } 
+        }
         public double[] ConvertToArray()
         {
             if (Rows != 1 && Columns != 1)
