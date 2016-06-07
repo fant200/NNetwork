@@ -86,8 +86,8 @@ namespace NetTests
         [ExpectedException(typeof(ArgumentException))]
         public void MulMatrixWithWrongDim()
         {
-            Matrix a = new Matrix(3, 3);
-            Matrix b = new Matrix(4, 4);
+            Matrix a = new Matrix(4, 3);
+            Matrix b = new Matrix(2, 3);
             a = a * b;
         }
 
@@ -171,7 +171,7 @@ namespace NetTests
         {
 #if TESTUJE
             var matrix = new Matrix(10, 0);
-            double[,] tmp = (double[,])( matrix );
+            double[,] tmp = (double[,])(matrix);
             if (tmp == null)
                 Assert.Fail();
 #endif
