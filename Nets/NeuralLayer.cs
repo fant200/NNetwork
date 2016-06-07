@@ -8,9 +8,9 @@ namespace Nets
 {
     class NeuralLayer
     {
-        public Matrix weights,biases;
+        public Matrix weights, biases;
         NeuralLayer prevLayer;
-        Matrix errors,deltas;
+        Matrix errors, deltas;
         Matrix layerOutput;
         public static Random rng = new Random();
         int Size => weights.Rows;
@@ -21,12 +21,9 @@ namespace Nets
             weights = new Matrix(layerSize, numOfInputs);
             weights.ApplyFunction(x => rng.NextDouble());
             biases = new Matrix(layerSize, 1);
-            biases.ApplyFunction(x => 1);
-            errors = new Matrix(layerSize, 1);
-            deltas = new Matrix(layerSize, 1);
-            layerOutput = new Matrix(layerSize, 1);
+            biases.ApplyFunction(x => 0);
         }
-        public NeuralLayer(int layerSize, NeuralLayer _prevLayer): this(layerSize, _prevLayer.Size)
+        public NeuralLayer(int layerSize, NeuralLayer _prevLayer) : this(_prevLayer.Size, layerSize)
         {
             prevLayer = _prevLayer;
         }
@@ -34,9 +31,20 @@ namespace Nets
         public Matrix ForwardPropagate(Matrix input)
         {
             layerOutput = weights * input;
-            layerOutput += biases;
+            AddBiases();
             layerOutput.ApplyFunction(Math.Tanh);
             return layerOutput;
+        }
+
+        private void AddBiases()
+        {
+            for (int i = 0; i < layerOutput.Rows; i++)
+            {
+                for (int j = 0; j < layerOutput.Columns; j++)
+                {
+                    layerOutput[i, j] += biases[i, 0];
+                }
+            }
         }
 
         public Matrix CalculateSelfError(Matrix targets)
@@ -45,7 +53,7 @@ namespace Nets
             return errors;
         }
 
-        public void SetPrevLayerError()
+        public void CalcAndSetPrevLayerError()
         {
             prevLayer.errors = CalculatePrevLayerError();
         }

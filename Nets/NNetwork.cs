@@ -38,5 +38,15 @@ namespace Nets
             }
             return temp;
         }
+
+        public void BackPropagate(Matrix targets)
+        {
+            layers.Last().CalculateSelfError(targets);
+
+            for (int i = LayersNum - 1; i > 0; i--)
+            {
+                layers[i].CalcAndSetPrevLayerError();
+            }
+        }
     }
 }
