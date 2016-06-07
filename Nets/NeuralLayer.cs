@@ -21,7 +21,7 @@ namespace Nets
             weights = new Matrix(layerSize, numOfInputs);
             weights.ApplyFunction(x => rng.NextDouble());
             biases = new Matrix(layerSize, 1);
-            biases.ApplyFunction(x => 0);
+            biases.ApplyFunction(x => 1);
         }
         public NeuralLayer(int layerSize, NeuralLayer _prevLayer) : this(_prevLayer.Size, layerSize)
         {
@@ -53,7 +53,7 @@ namespace Nets
             return errors;
         }
 
-        public void CalcAndSetPrevLayerError()
+        public void SetPrevLayerError()
         {
             prevLayer.errors = CalculatePrevLayerError();
         }
