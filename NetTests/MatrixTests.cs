@@ -43,7 +43,7 @@ namespace NetTests
                     ($"{type.FullName}",
                    new List<List<string>>
                     {
-                        new List<string> {type.Name, type.Name},
+                        new List<string> {type.FullName, type.FullName},
                     }
                         )
                 },
@@ -53,7 +53,7 @@ namespace NetTests
                     ($"{typeof (bool).FullName}",
                     new List<List<string>>
                     {
-                        new List<string> {type.Name,type.Name},
+                        new List<string> {type.FullName, type.FullName},
                     }
                         )
                 },
@@ -63,7 +63,7 @@ namespace NetTests
                     ($"{typeof (bool).FullName}",
                     new List<List<string>>
                     {
-                        new List<string> {type.Name,type.Name},
+                        new List<string> {type.FullName, type.FullName},
                     }
                         )
                 },
@@ -71,13 +71,13 @@ namespace NetTests
             var methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public).Select(x => x.GetFullName()).ToList();
             Func<string, string, string, IEnumerable<string>, string> lambda = (assemblyName, typeName, methodName, args)
                 => $"{typeName} {methodName}({string.Join(",", args)})";
-            foreach (var key in expectedMethods.Keys)
+            foreach (var str in
+                expectedMethods.Keys.SelectMany(
+                    key => expectedMethods[key].Item2.
+                        Select(
+                            list => lambda(type.Namespace, expectedMethods[key].Item1, key, list))))
             {
-                foreach (var list in expectedMethods[key].Item2)
-                {
-                    var str = lambda(type.Namespace, expectedMethods[key].Item1, key, list);
-                    Assert.IsTrue(methods.Contains(str), str);
-                }
+                Assert.IsTrue(methods.Contains(str), str);
             }
         }
 
@@ -112,6 +112,24 @@ namespace NetTests
             AreEqual(matrix2, data);
         }
 
+        [TestMethod]
+        public void EqualityTest()
+        {
+            int width = random.Next(0, 30);
+            int height = random.Next(0, 30);
+            var data = new double[height, width];
+            data.Randomize();
+            var data2 = (double[,])data.Clone();
+            var matrix1 = new Matrix(data);
+            var matrix2 = new Matrix(data2);
+            Assert.IsTrue(matrix1.Equals(matrix2));
+            Assert.IsTrue(matrix2.Equals(matrix1));
+            data2.Randomize();
+            matrix2 = new Matrix(data2);
+            Assert.IsFalse(matrix2.Equals(matrix1));
+            Assert.IsFalse(matrix1.Equals(matrix2));
+
+        }
         [TestMethod]
         public void TheSameArrays()
         {
@@ -177,6 +195,24 @@ namespace NetTests
 #endif
         }
 
+        [TestMethod]
+        public void ScalarMultiplication()
+        {
+            int width = random.Next(0, 30);
+            int height = random.Next(0, 30);
+            var data = new double[height, width];
+            data.Randomize();
+            var matrix = new Matrix(data);
+            for (int i = 0; i < height; ++i)
+            {
+                for (int j = 0; j < width; ++j)
+                {
+                    data[i, j] *= 3.1;
+                }
+            }
+            matrix = matrix * 3.1;
+            AreEqual(matrix, data);
+        }
         #endregion
 
 

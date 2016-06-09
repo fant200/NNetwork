@@ -1,7 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Nets
 {
+    [DebuggerDisplay("Matrix rows={Rows}, columns={Columns}")]
+
     public class Matrix : IEquatable<Matrix>
     {
         double[,] elements;
@@ -9,7 +15,9 @@ namespace Nets
         public int Columns => elements.GetLength(1);
         public double this[int rowNr, int columnNr]
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get { return elements[rowNr, columnNr]; }
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set { elements[rowNr, columnNr] = value; }
         }
 
@@ -98,7 +106,6 @@ namespace Nets
             }
             throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " matrices must have equal dimensions");
         }
-
         public bool Equals(Matrix other)
         {
             if (Rows == other.Rows && Columns == other.Columns)
@@ -107,15 +114,27 @@ namespace Nets
                 {
                     for (int j = 0; j < Columns; j++)
                     {
-                        if (this[i, j] != other[i, j])
+                        if (Math.Abs(this[i, j] - other[i, j]) > double.Epsilon)
                             return false;
                     }
                 }
                 return true;
+
             }
             return false;
         }
 
+        public static bool operator ==(Matrix m1, Matrix m2)
+        {
+            if (m1 == null)
+                return false;
+            return m1.Equals(m2);
+        }
+
+        public static bool operator !=(Matrix m1, Matrix m2)
+        {
+            return !(m1 == m2);
+        }
         public static explicit operator double[,] (Matrix m1)
         {
             return m1.elements;
@@ -134,8 +153,9 @@ namespace Nets
             return tmp;
         }
 
-        public Matrix SumByWidth(Matrix m1) //TODO
+        public Matrix SumByWidth(Matrix m1)
         {
+            //TODO : SumByWidth
             Matrix tmp = new Matrix(1, m1.Columns);
             for (int i = 0; i < m1.Rows; i++)
             {
@@ -182,7 +202,6 @@ namespace Nets
                 }
             }
         }
-
         public void Print() //Temporary
         {
             for (int i = 0; i < Rows; i++)
@@ -194,12 +213,34 @@ namespace Nets
                 Console.WriteLine();
             }
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override bool Equals(object obj)
+        {
+            var comp = obj as Matrix;
+            if (comp == null)
+                return false;
+            return Equals(comp);
+        }
 
         public override string ToString()
         {
-            return base.ToString();
-        }
+            StringBuilder builder = new StringBuilder((Rows + 2) * (Columns + 2));
+            for (int i = 0; i < Rows; ++i)
+            {
+                builder.Append('-');
+            }
+            for (int i = 0; i < Rows; ++i)
+            {
+                builder.Append('|');
+                for (int j = 0; j < Columns; ++j)
+                {
+                    builder.Append(this[i, j]).Append(' ');
+                }
+                builder.Append('|');
+            }
+            return builder.ToString();
 
+        }
 
     }
 }
