@@ -183,6 +183,12 @@ namespace Nets
             }
             return tmp;
         }
+
+        public Matrix DeepCopy()
+        {
+            return new Matrix(elements);
+        }
+
         public double[] ConvertToArray()
         {
             if (Rows != 1 && Columns != 1)
