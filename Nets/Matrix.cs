@@ -92,19 +92,36 @@ namespace Nets
 
         public static Matrix operator +(Matrix m1, Matrix m2)
         {
+            if (m1.Rows != m2.Rows || m1.Columns != m2.Columns)
+                throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " matrices must have equal dimensions");
+
             Matrix temp = new Matrix(m1.Rows, m1.Columns);
-            if (m1.Rows == m2.Rows && m1.Columns == m2.Columns)
+
+            for (int i = 0; i < m1.Rows; i++)
             {
-                for (int i = 0; i < m1.Rows; i++)
+                for (int j = 0; j < m1.Columns; j++)
                 {
-                    for (int j = 0; j < m1.Columns; j++)
-                    {
-                        temp[i, j] = m1[i, j] + m2[i, j];
-                    }
+                    temp[i, j] = m1[i, j] + m2[i, j];
                 }
-                return temp;
             }
-            throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " matrices must have equal dimensions");
+            return temp;    
+        }
+
+        public static Matrix operator -(Matrix m1, Matrix m2)
+        {
+            if(m1.Rows != m2.Rows || m1.Columns != m2.Columns)
+                throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " matrices must have equal dimensions");
+
+            Matrix temp = new Matrix(m1.Rows, m1.Columns);
+
+            for (int i = 0; i < m1.Rows; i++)
+            {
+                for (int j = 0; j < m1.Columns; j++)
+                {
+                    temp[i, j] = m1[i, j] - m2[i, j];
+                }
+            }
+            return temp;
         }
         public bool Equals(Matrix other)
         {
