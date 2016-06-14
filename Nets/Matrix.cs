@@ -37,6 +37,38 @@ namespace Nets
             }
         }
 
+        public Matrix EntitywiseMul(Matrix m1, Matrix m2)
+        {
+            if (m1.Columns != m2.Rows)
+                throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " have wrong dimensions");
+
+            Matrix temp = new Matrix(m1.Rows, m1.Columns);
+            for (int i = 0; i < m1.Rows; i++)
+            {
+                for (int j = 0; j < m1.Columns; j++)
+                {
+                    temp[i, j] = m1[i, j] * m2[i, j];
+                }
+            }
+
+            return temp;
+        }
+
+        public Matrix Transpose()
+        {
+            Matrix temp = new Matrix(Columns, Rows);
+
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
+                {
+                    temp[j, i] = this[i, j];
+                }
+            }
+
+            return temp;
+        }
+
         public static Matrix operator *(Matrix m1, Matrix m2)
         {
             if (m1.Columns != m2.Rows)
@@ -104,12 +136,12 @@ namespace Nets
                     temp[i, j] = m1[i, j] + m2[i, j];
                 }
             }
-            return temp;    
+            return temp;
         }
 
         public static Matrix operator -(Matrix m1, Matrix m2)
         {
-            if(m1.Rows != m2.Rows || m1.Columns != m2.Columns)
+            if (m1.Rows != m2.Rows || m1.Columns != m2.Columns)
                 throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " matrices must have equal dimensions");
 
             Matrix temp = new Matrix(m1.Rows, m1.Columns);
