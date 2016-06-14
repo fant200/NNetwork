@@ -247,7 +247,7 @@ namespace Nets
             }
         }
 
-        public void ApplyFunction(Func<double, double> appliedFunction)
+        public void ForEach(Func<double, double> appliedFunction)
         {
             for (int i = 0; i < Rows; i++)
             {
@@ -257,17 +257,18 @@ namespace Nets
                 }
             }
         }
-        public void Print() //Temporary
+
+        public void ForEach(Func<int,int,double,double> appliedFunction)
         {
             for (int i = 0; i < Rows; i++)
             {
                 for (int j = 0; j < Columns; j++)
                 {
-                    Console.Write(elements[i, j].ToString() + "\t");
+                    elements[i, j] = appliedFunction(i, j, elements[i, j]);
                 }
-                Console.WriteLine();
             }
         }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override bool Equals(object obj)
         {

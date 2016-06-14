@@ -19,9 +19,9 @@ namespace Nets
         public NeuralLayer(int numOfInputs, int layerSize)
         {
             weights = new Matrix(layerSize, numOfInputs);
-            weights.ApplyFunction(x => rng.NextDouble());
+            weights.ForEach(x => rng.NextDouble());
             biases = new Matrix(layerSize, 1);
-            biases.ApplyFunction(x => 1);
+            biases.ForEach(x => 1);
         }
         public NeuralLayer(int layerSize, NeuralLayer _prevLayer) : this(_prevLayer.Size, layerSize)
         {
@@ -32,7 +32,7 @@ namespace Nets
         {
             layerOutput = weights * input;
             AddBiases();
-            layerOutput.ApplyFunction(Math.Tanh);
+            layerOutput.ForEach(Math.Tanh);
             return layerOutput;
         }
 
