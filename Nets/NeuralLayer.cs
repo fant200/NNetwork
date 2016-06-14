@@ -47,14 +47,9 @@ namespace Nets
             }
         }
 
-        public void CalculateDelta(Matrix targets)
+        public void CalculateError(Matrix targets)
         {
-            Matrix temp = layerOutput.DeepCopy();
-            temp.ForEach(x => 1 - x * x);
-
             errors = (layerOutput - targets);
-
-            deltas = Matrix.EntitywiseMul(errors, temp);
         }
 
         public void CalculateDelta()
@@ -70,5 +65,9 @@ namespace Nets
             prevLayer.errors = weights.Transpose() * deltas;
         }
 
+        public void UpdateWeights()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
