@@ -10,7 +10,7 @@ namespace Nets
     {
         public Matrix weights, biases;
         NeuralLayer prevLayer;
-        Matrix errors, deltas;
+        Matrix deltas, errors;
         Matrix layerOutput;
         public static Random rng = new Random();
         int Size => weights.Rows;
@@ -47,22 +47,28 @@ namespace Nets
             }
         }
 
-        public Matrix CalculateSelfError(Matrix targets)
+        public void CalculateDelta(Matrix targets)
         {
-            errors = layerOutput * targets;
-            return errors;
+            Matrix temp = layerOutput.DeepCopy();
+            temp.ForEach(x => 1 - x * x);
+
+            errors = (layerOutput - targets);
+
+            deltas = Matrix.EntitywiseMul(errors, temp);
         }
 
-        public void SetPrevLayerError()
+        public void CalculateDelta()
         {
-            prevLayer.errors = CalculatePrevLayerError();
+            Matrix temp = layerOutput.DeepCopy();
+            temp.ForEach(x => 1 - x * x);
+
+            deltas = Matrix.EntitywiseMul(errors, temp);
         }
 
-        public Matrix CalculatePrevLayerError()
+        public void BackpropError()
         {
-            return errors * weights;
+            prevLayer.errors = weights.Transpose() * deltas;
         }
-
 
     }
 }
