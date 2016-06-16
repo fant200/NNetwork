@@ -39,7 +39,7 @@ namespace Nets
 
         public static Matrix EntitywiseMul(Matrix m1, Matrix m2)
         {
-            if (m1.Columns != m2.Rows)
+            if (m1.Rows != m2.Rows || m1.Columns != m2.Columns)
                 throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " have wrong dimensions");
 
             Matrix temp = new Matrix(m1.Rows, m1.Columns);

@@ -20,7 +20,7 @@ namespace Nets
             Console.WriteLine(a.ForwardPropagate(input));
             for (int i = 0; i < 1000; i++)
             {
-                a.TrainPass(input, targets);
+                a.TrainingPass(input, targets);
             }
             Console.WriteLine(a.ForwardPropagate(input));
             Console.ReadKey();
