@@ -11,7 +11,8 @@ namespace Nets
         public Matrix weights, biases;
         NeuralLayer prevLayer;
         Matrix deltas, errors;
-        Matrix layerOutput;
+        Matrix layerOutput, layerInput;
+        double learningMultiplier = 0.5;
         public static Random rng = new Random();
         int Size => weights.Rows;
         int Inputs => weights.Columns;
@@ -30,6 +31,7 @@ namespace Nets
 
         public Matrix ForwardPropagate(Matrix input)
         {
+            layerInput = input;
             layerOutput = weights * input;
             AddBiases();
             layerOutput.ForEach(Math.Tanh);
@@ -47,9 +49,14 @@ namespace Nets
             }
         }
 
-        public void CalculateError(Matrix targets)
+        public void CalculateDelta(Matrix targets)
         {
+            Matrix temp = layerOutput.DeepCopy();
+            temp.ForEach(x => 1 - x * x);
+
             errors = (layerOutput - targets);
+
+            deltas = Matrix.EntitywiseMul(errors, temp);
         }
 
         public void CalculateDelta()
@@ -67,7 +74,7 @@ namespace Nets
 
         public void UpdateWeights()
         {
-            throw new NotImplementedException();
+            weights -= deltas * layerInput.Transpose() * learningMultiplier;
         }
     }
 }

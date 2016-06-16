@@ -39,19 +39,38 @@ namespace Nets
             return temp;
         }
 
-        public void BackPropagate(Matrix targets)
+        void CalculateDeltas(Matrix targets)
         {
-            layers.Last().CalculateError(targets);
+            layers.Last().CalculateDelta(targets);
+            layers.Last().BackpropError();
+
             for (int i = layers.GetUpperBound(0); i > 1; i--)
             {
                 layers[i].CalculateDelta();
                 layers[i].BackpropError();
             }
+
+            layers[0].CalculateDelta();
         }
 
-        public void UpdateWeights()
+        void UpdateWeights()
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < LayersNum; i++)
+            {
+                layers[i].UpdateWeights();
+            }
+        }
+
+        public void BackPropagate(Matrix targets)
+        {
+            CalculateDeltas(targets);
+            UpdateWeights();
+        }
+
+        public void TrainingPass(Matrix inputs, Matrix targets)
+        {
+            ForwardPropagate(inputs);
+            BackPropagate(targets);
         }
     }
 }
