@@ -11,8 +11,9 @@ namespace Nets
         public Matrix weights, biases;
         NeuralLayer prevLayer;
         Matrix deltas, errors;
+        Matrix momentum;
         Matrix layerOutput, layerInput;
-        double learningMultiplier = 0.5;
+        double learningMultiplier = 0.4;
         public static Random rng = new Random();
         int Size => weights.Rows;
         int Inputs => weights.Columns;
@@ -21,6 +22,7 @@ namespace Nets
         {
             weights = new Matrix(layerSize, numOfInputs);
             weights.ForEach(x => rng.NextDouble());
+            momentum = new Matrix(layerSize, numOfInputs);
             biases = new Matrix(layerSize, 1);
             biases.ForEach(x => 1);
         }
@@ -74,7 +76,9 @@ namespace Nets
 
         public void UpdateWeights()
         {
-            weights -= deltas * layerInput.Transpose() * learningMultiplier;
+            momentum *= 0.45;
+            momentum += deltas * layerInput.Transpose() * learningMultiplier;
+            weights -= momentum;
         }
     }
 }

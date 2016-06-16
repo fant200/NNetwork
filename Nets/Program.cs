@@ -18,7 +18,7 @@ namespace Nets
             Matrix input = new Matrix(new double[,] { { 0, 0, 1, 1 }, { 0, 1, 0, 1 } });
             Matrix targets = new Matrix(new double[,] { { 0, 1, 1, 0 } });
             Console.WriteLine(a.ForwardPropagate(input));
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 75; i++)
             {
                 a.TrainingPass(input, targets);
             }
