@@ -12,6 +12,7 @@ namespace Nets
         readonly int inputsNr;
         Matrix netInput;
         int LayersNum => layers.Length;
+        public Matrix Error => layers.Last().Errors;
 
         public NNetwork(int inputs, int[] NetworkComposition)
         {
