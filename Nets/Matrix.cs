@@ -189,28 +189,28 @@ namespace Nets
             return m1.elements;
         }
 
-        public Matrix SumByLength(Matrix m1) //TODO
+        public Matrix SumByLength() //TODO
         {
-            Matrix tmp = new Matrix(m1.Rows, 1);
-            for (int i = 0; i < m1.Columns; i++)
+            Matrix tmp = new Matrix(Rows, 1);
+            for (int i = 0; i < Rows; i++)
             {
-                for (int j = 0; j < m1.Rows; j++)
+                for (int j = 0; j < Columns; j++)
                 {
-                    tmp[j, 0] += m1[i, j];
+                    tmp[i, 0] += this[i, j];
                 }
             }
             return tmp;
         }
 
-        public Matrix SumByWidth(Matrix m1)
+        public Matrix SumByWidth()
         {
             //TODO : SumByWidth
-            Matrix tmp = new Matrix(1, m1.Columns);
-            for (int i = 0; i < m1.Rows; i++)
+            Matrix tmp = new Matrix(1, Columns);
+            for (int i = 0; i < Rows; i++)
             {
-                for (int j = 0; j < m1.Columns; j++)
+                for (int j = 0; j < Columns; j++)
                 {
-                    tmp[0, j] += m1[j, i];
+                    tmp[0, j] += this[j, i];
                 }
             }
             return tmp;
