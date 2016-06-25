@@ -14,11 +14,16 @@ namespace Nets
         Matrix momentum;
         Matrix layerOutput, layerInput;
         double learningMultiplier = 0.1;
-        public static Random rng = new Random();
+        private static readonly Random rng;
+
+        static NeuralLayer()
+        {    
+            rng = new Random(); //Chcemy kontrolować kiedy to się stworzy
+        }
 
         int Size => weights.Rows;
         int Inputs => weights.Columns;
-        public Matrix Errors { get { return errors; } }
+        public Matrix Errors => errors;
 
         public NeuralLayer(int numOfInputs, int layerSize)
         {

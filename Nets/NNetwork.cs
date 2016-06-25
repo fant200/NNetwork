@@ -8,7 +8,7 @@ namespace Nets
 {
     public class NNetwork
     {
-        NeuralLayer[] layers;
+        readonly NeuralLayer[] layers;
         readonly int inputsNr;
         Matrix netInput;
         int LayersNum => layers.Length;
@@ -40,7 +40,7 @@ namespace Nets
             return temp;
         }
 
-        void CalculateDeltas(Matrix targets)
+        private void CalculateDeltas(Matrix targets)
         {
             layers.Last().CalculateDelta(targets);
             layers.Last().BackpropError();
@@ -54,7 +54,7 @@ namespace Nets
             layers[0].CalculateDelta();
         }
 
-        void UpdateWeights()
+        private void UpdateWeights()
         {
             for (int i = 0; i < LayersNum; i++)
             {

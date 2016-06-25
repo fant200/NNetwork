@@ -10,7 +10,7 @@ namespace Nets
 
     public class Matrix : IEquatable<Matrix>
     {
-        double[,] elements;
+        readonly double[,] elements;
         public int Rows => elements.GetLength(0);
         public int Columns => elements.GetLength(1);
         public double this[int rowNr, int columnNr]
@@ -142,7 +142,7 @@ namespace Nets
         public static Matrix operator -(Matrix m1, Matrix m2)
         {
             if (m1.Rows != m2.Rows || m1.Columns != m2.Columns)
-                throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " matrices must have equal dimensions");
+                throw new ArgumentException($"{nameof(m1)} {nameof(m2)} matrices must have equal dimensions");
 
             Matrix temp = new Matrix(m1.Rows, m1.Columns);
 
@@ -157,27 +157,22 @@ namespace Nets
         }
         public bool Equals(Matrix other)
         {
-            if (Rows == other.Rows && Columns == other.Columns)
+            if (Rows != other.Rows || Columns != other.Columns)
+                return false;
+            for (int i = 0; i < Rows; i++)
             {
-                for (int i = 0; i < Rows; i++)
+                for (int j = 0; j < Columns; j++)
                 {
-                    for (int j = 0; j < Columns; j++)
-                    {
-                        if (Math.Abs(this[i, j] - other[i, j]) > double.Epsilon)
-                            return false;
-                    }
+                    if (Math.Abs(this[i, j] - other[i, j]) > double.Epsilon)
+                        return false;
                 }
-                return true;
-
             }
-            return false;
+            return true;
         }
 
         public static bool operator ==(Matrix m1, Matrix m2)
         {
-            if (m1 == null)
-                return false;
-            return m1.Equals(m2);
+            return !(m1 == null) && m1.Equals(m2);
         }
 
         public static bool operator !=(Matrix m1, Matrix m2)
@@ -189,8 +184,9 @@ namespace Nets
             return m1.elements;
         }
 
-        public Matrix SumByLength() //TODO
+        public Matrix SumByLength()
         {
+            //TODO : SumByLength
             Matrix tmp = new Matrix(Rows, 1);
             for (int i = 0; i < Rows; i++)
             {
@@ -220,8 +216,7 @@ namespace Nets
         {
             return new Matrix(elements);
         }
-
-        public double[] ConvertToArray()
+        public double[] ToArray()
         {
             if (Rows != 1 && Columns != 1)
                 throw new ArgumentException("Matrix must have at least one dimension of size equal 1");
@@ -258,7 +253,7 @@ namespace Nets
             }
         }
 
-        public void ForEach(Func<int,int,double,double> appliedFunction)
+        public void ForEach(Func<int, int, double, double> appliedFunction)
         {
             for (int i = 0; i < Rows; i++)
             {
@@ -276,6 +271,26 @@ namespace Nets
             if (comp == null)
                 return false;
             return Equals(comp);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 0;
+                for (int i = 0; i < Rows; ++i)
+                {
+                    for (int j = 0; j < Columns; ++j)
+                    {
+                        hash += (int) Math.Ceiling(Math.Pow(
+                                            ((hash << 4) ^ (hash >> 28)) + this[i, j],
+                                            this[i, j]
+                                            ));
+
+                    }
+                }
+                return hash;
+            }
         }
 
         public override string ToString()
