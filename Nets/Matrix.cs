@@ -26,8 +26,12 @@ namespace Nets
             elements = new double[Rows, Columns];
         }
 
-        public Matrix(double[,] array) : this(array.GetLength(0), array.GetLength(1))
+        public Matrix(double[,] array)
         {
+            if (array == null)
+                throw new ArgumentNullException("Matrix must be initialized with not null array");
+
+            elements = new double[array.GetLength(0), array.GetLength(1)];
             for (int i = 0; i < Rows; i++)
             {
                 for (int j = 0; j < Columns; j++)
@@ -39,6 +43,9 @@ namespace Nets
 
         public static Matrix EntitywiseMul(Matrix m1, Matrix m2)
         {
+            if (m1 == null || m2 == null)
+                throw new ArgumentNullException("Matrices must not be null");
+
             if (m1.Rows != m2.Rows || m1.Columns != m2.Columns)
                 throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " have wrong dimensions");
 
@@ -71,6 +78,9 @@ namespace Nets
 
         public static Matrix operator *(Matrix m1, Matrix m2)
         {
+            if (m1 == null || m2 == null)
+                throw new ArgumentNullException("Matrices must not be null");
+
             if (m1.Columns != m2.Rows)
                 throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " have wrong dimensions");
 
@@ -94,6 +104,9 @@ namespace Nets
         }
         public static Matrix operator *(Matrix m1, double d1)
         {
+            if (m1 == null)
+                throw new ArgumentNullException("Matrix must not be null");
+
             Matrix temp = new Matrix(m1.Rows, m1.Columns);
             for (int i = 0; i < m1.Rows; i++)
             {
@@ -111,6 +124,9 @@ namespace Nets
         }
         public static Matrix operator *(Matrix m1, int i1)
         {
+            if (m1 == null)
+                throw new ArgumentNullException("Matrix must not be null");
+
             Matrix temp = new Matrix(m1.Rows, m1.Columns);
             for (int i = 0; i < m1.Rows; i++)
             {
@@ -124,6 +140,9 @@ namespace Nets
 
         public static Matrix operator +(Matrix m1, Matrix m2)
         {
+            if (m1 == null || m2 == null)
+                throw new ArgumentNullException("Matrices must not be null");
+
             if (m1.Rows != m2.Rows || m1.Columns != m2.Columns)
                 throw new ArgumentException(nameof(m1) + " " + nameof(m2) + " matrices must have equal dimensions");
 
@@ -141,6 +160,9 @@ namespace Nets
 
         public static Matrix operator -(Matrix m1, Matrix m2)
         {
+            if (m1 == null || m2 == null)
+                throw new ArgumentNullException("Matrices must not be null");
+
             if (m1.Rows != m2.Rows || m1.Columns != m2.Columns)
                 throw new ArgumentException($"{nameof(m1)} {nameof(m2)} matrices must have equal dimensions");
 
@@ -172,7 +194,7 @@ namespace Nets
 
         public static bool operator ==(Matrix m1, Matrix m2)
         {
-            return !(m1 == null) && m1.Equals(m2);
+            return !((object)m1 == null || (object)m2 == null) && m1.Equals(m2);
         }
 
         public static bool operator !=(Matrix m1, Matrix m2)
@@ -231,13 +253,13 @@ namespace Nets
             return temp;
         }
 
-        public void Populate(Func<int, int, double> populatingFunction)
+        public void ForEach(Func<int, int, double> appliedFunction)
         {
             for (int i = 0; i < Rows; i++)
             {
                 for (int j = 0; j < Columns; j++)
                 {
-                    elements[i, j] = populatingFunction(i, j);
+                    elements[i, j] = appliedFunction(i, j);
                 }
             }
         }

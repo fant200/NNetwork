@@ -155,7 +155,7 @@ namespace NetTests
         {
             var matrix = new Matrix(10, 10);
             Func<int, int, double> lambda = (i, j) => (i + j);
-            matrix.Populate(lambda);
+            matrix.ForEach(lambda);
             DoActionInLoop(matrix, (m, i, j) => Assert.AreEqual(lambda(i, j), m[i, j]));
         }
         #region operators

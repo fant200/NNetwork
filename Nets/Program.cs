@@ -14,15 +14,11 @@ namespace Nets
         [STAThread]
         static void Main()
         {
-            NNetwork a = new NNetwork(2, new [] { 4, 1 });
-            Matrix input = new Matrix(new double[,] { { 0, 0, 1, 1 }, { 0, 1, 0, 1 } });
-            Matrix targets = new Matrix(new double[,] { { 0, 1, 1, 0 } });
-            Console.WriteLine(a.ForwardPropagate(input));
-            for (int i = 0; i < 75; i++)
-            {
-                a.TrainingPass(input, targets);
-            }
-            Console.WriteLine(a.ForwardPropagate(input));
+            Console.ReadKey();
+            Matrix a = new Matrix(1, 2);
+            Matrix b = new Matrix(2, 1);
+            Matrix c;
+            c = a - b;
             Console.ReadKey();
         }
     }

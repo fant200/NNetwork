@@ -6,87 +6,32 @@ using System.Threading.Tasks;
 
 namespace Nets
 {
-    class NeuralLayer
+    public abstract class NeuralLayer : IForwardPropagable, IBackPropagable
     {
-        Matrix weights, biases;
-        NeuralLayer prevLayer;
-        Matrix deltas, errors;
-        Matrix momentum;
-        Matrix layerOutput, layerInput;
-        double learningMultiplier = 0.1;
-        private static readonly Random rng;
+        protected Matrix layerInput, layerOutput;
+        protected static readonly Random rng;
+        public double learningRate = 0.05;
 
         static NeuralLayer()
-        {    
+        {
             rng = new Random(); //Chcemy kontrolować kiedy to się stworzy
         }
 
-        int Size => weights.Rows;
-        int Inputs => weights.Columns;
-        public Matrix Errors => errors;
+        public abstract int OutputSize { get; }
+        public abstract int InputSize { get; }
+        public abstract Matrix Errors { get; }
 
-        public NeuralLayer(int numOfInputs, int layerSize)
-        {
-            weights = new Matrix(layerSize, numOfInputs);
-            weights.ForEach(x => rng.NextDouble());
-            momentum = new Matrix(layerSize, numOfInputs);
-            biases = new Matrix(layerSize, 1);
-            biases.ForEach(x => 1);
-        }
-        public NeuralLayer(int layerSize, NeuralLayer _prevLayer) : this(_prevLayer.Size, layerSize)
-        {
-            prevLayer = _prevLayer;
-        }
+        protected NeuralLayer(int numOfInputs, int layerSize) { }
 
         public Matrix ForwardPropagate(Matrix input)
         {
             layerInput = input;
-            layerOutput = weights * input;
-            AddBiases();
-            layerOutput.ForEach(Math.Tanh);
+            layerOutput = CalculateOutput(layerInput);
             return layerOutput;
         }
 
-        private void AddBiases()
-        {
-            for (int i = 0; i < layerOutput.Rows; i++)
-            {
-                for (int j = 0; j < layerOutput.Columns; j++)
-                {
-                    layerOutput[i, j] += biases[i, 0];
-                }
-            }
-        }
-
-        public void CalculateDelta(Matrix targets)
-        {
-            Matrix temp = layerOutput.DeepCopy();
-            temp.ForEach(x => 1 - x * x);
-
-            errors = (layerOutput - targets);
-
-            deltas = Matrix.EntitywiseMul(errors, temp);
-        }
-
-        public void CalculateDelta()
-        {
-            Matrix temp = layerOutput.DeepCopy();
-            temp.ForEach(x => 1 - x * x);
-
-            deltas = Matrix.EntitywiseMul(errors, temp);
-        }
-
-        public void BackpropError()
-        {
-            prevLayer.errors = weights.Transpose() * deltas;
-        }
-
-        public void UpdateWeights()
-        {
-            momentum *= 0.45;
-            momentum += deltas * layerInput.Transpose() * learningMultiplier;
-            weights -= momentum;
-            biases -= deltas.SumByLength();
-        }
+        protected abstract Matrix CalculateOutput(Matrix input);
+        public abstract Matrix BackPropagate(Matrix input);
+        public abstract void Update();
     }
 }
