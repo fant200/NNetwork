@@ -15,10 +15,11 @@ namespace Nets
         static void Main()
         {
             Console.ReadKey();
-            Matrix a = new Matrix(1, 2);
-            Matrix b = new Matrix(2, 1);
-            Matrix c;
-            c = a - b;
+            NeuralNetwork a;
+            NeuralNetwork.Builder builder = new NeuralNetwork.Builder(1);
+            builder.Add("forward", 10);
+            builder.Add("forward", 1);
+            a = builder.Build();
             Console.ReadKey();
         }
     }
